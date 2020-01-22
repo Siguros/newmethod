@@ -586,6 +586,7 @@ double s2[param->nOutput];  // Output delta from hidden layer to the output laye
 									arrayIH->RefreshCell(jj, k, weight1[jj][k], param->maxWeight, param->minWeight);
 									//Rewrite
 									arrayIH->WriteCell(jj, k, weight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight,false,0);
+								weight1[jj][k] = arrayIH->ConductanceToWeight(jj, k, param->maxWeight, param->minWeight); 
 								}
                                 weightChangeBatch = weightChangeBatch || static_cast<AnalogNVM*>(arrayIH->cell[jj][k])->numPulse;
                                 if(fabs(static_cast<AnalogNVM*>(arrayIH->cell[jj][k])->numPulse) > maxPulseNum)
@@ -930,14 +931,14 @@ double s2[param->nOutput];  // Output delta from hidden layer to the output laye
 								if ((batchSize % param->Refreshrate) == param->Refreshrate - 1) {
 									//Refresh
 									double weight2_temp = weight2[jj][k];
-									std::cout << "weight2:" << weight2[jj][k] << std::endl;
+									//std::cout << "weight2:" << weight2[jj][k] << std::endl;
 									arrayHO->RefreshCell(jj, k, weight2[jj][k], param->maxWeight, param->minWeight);
 									//Rewrite
 									weight2[jj][k] = arrayHO->ConductanceToWeight(jj, k, param->maxWeight, param->minWeight);
-									std::cout << "Refresh:" << weight2[jj][k] << std::endl;
+									//std::cout << "Refresh:" << weight2[jj][k] << std::endl;
 									arrayHO->WriteCell(jj, k, weight2_temp, weight2_temp, param->maxWeight, param->minWeight,false, 0);
 									weight2[jj][k] = arrayHO->ConductanceToWeight(jj, k, param->maxWeight, param->minWeight);
-									std::cout<<"Rewrite:"<< weight2[jj][k] << std::endl;
+									//std::cout<<"Rewrite:"<< weight2[jj][k] << std::endl;
 								}
 								weightChangeBatch = weightChangeBatch || static_cast<AnalogNVM*>(arrayHO->cell[jj][k])->numPulse;
                                 if(fabs(static_cast<AnalogNVM*>(arrayIH->cell[jj][k])->numPulse) > maxPulseNum)
