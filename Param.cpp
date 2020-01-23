@@ -46,7 +46,7 @@ Param::Param() {
 	numMnistTestImages = 10000;	// # of testing images in MNIST
 	
 	/* Algorithm parameters */
-	numTrainImagesPerEpoch = 8000;	// # of training images per epoch
+	numTrainImagesPerEpoch = 1000;	// # of training images per epoch
 	totalNumEpochs = 10;	// Total number of epochs
 	interNumEpochs = 1;		// Internal number of epochs (print out the results every interNumEpochs)
 	nInput = 400;     // # of neurons in input layer
@@ -60,7 +60,7 @@ Param::Param() {
 	minWeight = -1;	// Lower bound of weight value
     /*Optimization method 
     Available option include: "SGD", "Momentum", "Adagrad", "RMSprop" and "Adam"*/
-    optimization_type = "Momentum";
+    optimization_type = "SGD";
 
 
 	/* Hardware parameters */
@@ -89,6 +89,7 @@ Param::Param() {
 	PulseOperate = false;
 	PulseNum =1; //default pulsenum=1;
 	Refreshrate = 100;
+	Thr_epoch = 3;
 
 }
 

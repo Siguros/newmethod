@@ -90,6 +90,7 @@ public:
 	int PulseNum;
 	double Learning_sub;
 	int Refreshrate;
+	int Thr_epoch;
 };
 
 #endif

@@ -152,7 +152,7 @@ public:
 	}
 
 	double ReadCell(int x, int y,char*mode=NULL);	// x (column) and y (row) start from index 0
-	void WriteCell(int x, int y, double deltaWeight, double weight, double maxWeight, double minWeight, bool regular,int NumCell);
+	void WriteCell(int x, int y, double deltaWeight, double weight, double maxWeight, double minWeight, bool regular,int NumCell,bool multcell_mode);
 	double GetMaxCellReadCurrent(int x, int y, char*mode=NULL);
 	double GetMinCellReadCurrent(int x, int y, char*mode=NULL);
 	double GetMediumCellReadCurrent(int x, int y);

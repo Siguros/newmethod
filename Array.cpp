@@ -171,7 +171,7 @@ double Array::ReadCell(int x, int y, char* mode) {
 }
 
 void Array::WriteCell(int x, int y, double deltaWeight, double weight, double maxWeight, double minWeight, 
-						bool regular,int NumCell) {
+						bool regular,int NumCell,bool multcell_mode) {
 	// TODO: include wire resistance
 	if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(**cell)) // Analog eNVM
     { 
@@ -183,28 +183,57 @@ void Array::WriteCell(int x, int y, double deltaWeight, double weight, double ma
         else 
         {	// Preparation stage (ideal write)
             //printf("initialize the conductance\n");
-			double conductance = 0;
-			double conductanceN[numCellPerSynapse];
-		
-			double maxConductance = static_cast<eNVM*>(cell[x][y])->maxConductance;
-			double minConductance = static_cast<eNVM*>(cell[x][y])->minConductance;
-			std::fill_n(conductanceN, numCellPerSynapse, minConductance);
-            // ? should add "+minConductance"?
-			for (int i = 0; i < numCellPerSynapse; i++) {
-				conductanceN[i] += (weight - minWeight) / (maxWeight - minWeight) * (maxConductance - minConductance);
-				if (conductanceN[i] > maxConductance)
-				{
-					conductanceN[i] = maxConductance;
+			if (multcell_mode) { // multicell update Ω√≈¥
+				double conductance = 0;
+				double conductanceN[numCellPerSynapse];
+
+				double maxConductance = static_cast<eNVM*>(cell[x][y])->maxConductance;
+				double minConductance = static_cast<eNVM*>(cell[x][y])->minConductance;
+				std::fill_n(conductanceN, numCellPerSynapse, minConductance);
+				// ? should add "+minConductance"?
+				for (int i = 0; i < numCellPerSynapse; i++) {
+					conductanceN[i] += (weight - minWeight) / (maxWeight - minWeight) * (maxConductance - minConductance);
+					if (conductanceN[i] > maxConductance)
+					{
+						conductanceN[i] = maxConductance;
+					}
+					else if (conductanceN[i] < minConductance)
+					{
+						conductanceN[i] = minConductance;
+					}
+					static_cast<eNVM*>(cell[x][y])->conductanceN[i] = conductanceN[i];
+					conductance += conductanceN[i];
+					//std::cout << conductanceN[i];
 				}
-				else if (conductanceN[i] < minConductance)
-				{
-					conductanceN[i] = minConductance;
-				}
-				static_cast<eNVM*>(cell[x][y])->conductanceN[i] = conductanceN[i];
-				conductance += conductanceN[i];
-				//std::cout << conductanceN[i];
+				static_cast<eNVM*>(cell[x][y])->conductance = conductance;
 			}
-			static_cast<eNVM*>(cell[x][y])->conductance = conductance;
+			else { // 1cell¿ª ¿ÃøÎ«œø© updateΩ√≈¥
+				double conductance = 0;
+				double conductanceN[numCellPerSynapse];
+
+				double maxConductance = static_cast<eNVM*>(cell[x][y])->maxConductance;
+				double minConductance = static_cast<eNVM*>(cell[x][y])->minConductance;
+				std::fill_n(conductanceN, numCellPerSynapse, 0);
+				// ? should add "+minConductance"?
+				conductanceN[0] = minConductance;
+					conductanceN[0] += (weight - minWeight) / (maxWeight - minWeight) * (maxConductance - minConductance);
+					if (conductanceN[0] > maxConductance)
+					{
+						conductanceN[0] = maxConductance;
+					}
+					else if (conductanceN[0] < minConductance)
+					{
+						conductanceN[0] = minConductance;
+					}
+					
+					for (int i = 0; i < numCellPerSynapse; i++) {
+						static_cast<eNVM*>(cell[x][y])->conductanceN[0] = conductanceN[0];
+						conductance += conductanceN[i];
+						//std::cout << conductanceN[i];
+				}
+				static_cast<eNVM*>(cell[x][y])->conductance = conductance;
+
+			}
 		}
 	}
     else    // SRAM or digital eNVM

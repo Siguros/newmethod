@@ -76,27 +76,27 @@ void WeightToConductance() {
     /* Erase the weight of arrayIH */
     for (int col=0; col<param->nHide; col++) {
         for (int row=0; row<param->nInput; row++) {
-            arrayIH->WriteCell(col, row, -(param->maxWeight-param->minWeight), -(param->maxWeight - param->minWeight) /* delta_W=-(param->maxWeight-param->minWeight) will completely erase */, param->maxWeight, param->minWeight, false,0);
+            arrayIH->WriteCell(col, row, -(param->maxWeight-param->minWeight), -(param->maxWeight - param->minWeight) /* delta_W=-(param->maxWeight-param->minWeight) will completely erase */, param->maxWeight, param->minWeight, false,0,false);
         }
     }
     /* Erase the weight of arrayHO */
     for (int col=0; col<param->nOutput; col++) {
         for (int row=0; row<param->nHide; row++) {
-            arrayHO->WriteCell(col, row, -(param->maxWeight-param->minWeight), -(param->maxWeight - param->minWeight) /* delta_W=-(param->maxWeight-param->minWeight) will completely erase */, param->maxWeight, param->minWeight, false,0);
+            arrayHO->WriteCell(col, row, -(param->maxWeight-param->minWeight), -(param->maxWeight - param->minWeight) /* delta_W=-(param->maxWeight-param->minWeight) will completely erase */, param->maxWeight, param->minWeight, false,0,false);
         }
     }
     /* Write weight to arrayIH */
     for (int col=0; col<param->nHide; col++) {
         for (int row=0; row<param->nInput; row++) {
 			//std::cout << weight1[col][row] << std::endl;
-			arrayIH->WriteCell(col, row, weight1[col][row], weight1[col][row], param->maxWeight, param->minWeight, false,0);
+			arrayIH->WriteCell(col, row, weight1[col][row], weight1[col][row], param->maxWeight, param->minWeight, false,0,false);
 			//std::cout << arrayIH->ConductanceToWeight(col, row, param->maxWeight, param->minWeight) << std::endl;
 		}
     }
     /* Write weight to arrayHO */
     for (int col=0; col<param->nOutput; col++) {
         for (int row=0; row<param->nHide; row++) {
-            arrayHO->WriteCell(col, row, weight2[col][row], weight2[col][row], param->maxWeight, param->minWeight, false,0);
+            arrayHO->WriteCell(col, row, weight2[col][row], weight2[col][row], param->maxWeight, param->minWeight, false,0,false);
         }
     }
 }

@@ -272,8 +272,8 @@ RealDevice::RealDevice(int x, int y,int NumCellperSynapse) {
 	//minConductance = maxConductance /50.2;
 	//maxConductance = (1/5e6);
 	//minConductance = maxConductance/2;
-	avgMaxConductance = (NumCellperSynapse)*maxConductance; // Average maximum cell conductance (S)
-	avgMinConductance = (NumCellperSynapse)*minConductance; // Average minimum cell conductance (S)
+	avgMaxConductance = maxConductance; // Average maximum cell conductance (S)
+	avgMinConductance = minConductance; // Average minimum cell conductance (S)
 	conductance = minConductance;	// Current conductance (S) (dynamic variable)
 	conductancePrev = conductance;	// Previous conductance (S) (dynamic variable)
 	std::fill_n(conductanceN, NumCellperSynapse, minConductance);
@@ -284,8 +284,8 @@ RealDevice::RealDevice(int x, int y,int NumCellperSynapse) {
 	writePulseWidthLTP = 300e-6;	// Write pulse width (s) for LTP or weight increase
 	writePulseWidthLTD = 300e-6;	// Write pulse width (s) for LTD or weight decrease
 	writeEnergy = 0;	// Dynamic variable for calculation of write energy (J)
-	maxNumLevelLTP=8;	// Maximum number of conductance states during LTP or weight increase
-	maxNumLevelLTD=8; // Maximum number of conductance states during LTD or weight decrease
+	maxNumLevelLTP=64;	// Maximum number of conductance states during LTP or weight increase
+	maxNumLevelLTD=64; // Maximum number of conductance states during LTD or weight decrease
 	numPulse = 0;	// Number of write pulses used in the most recent write operation (dynamic variable)
 	cmosAccess = true;	// True: Pseudo-crossbar (1T1R), false: cross-point
     FeFET = false;		// True: FeFET structure (Pseudo-crossbar only, should be cmosAccess=1)

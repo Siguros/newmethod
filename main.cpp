@@ -56,7 +56,7 @@
 #include "Definition.h"
 
 using namespace std;
-
+extern int epoch_count=0;
 int main() {
 	gen.seed(0);
 	/* Load in MNIST data */
@@ -171,6 +171,7 @@ int main() {
 			}
 			
 		}
+		epoch_count += 1;
 		//printf("Accuracy at %d epochs is : %.2f%\n", i*param->interNumEpochs, (double)correct/param->numMnistTestImages*100);
 		//printf("\tRead latency=%.4e s\n", subArrayIH->readLatency + subArrayHO->readLatency);
 		//printf("\tWrite latency=%.4e s\n", subArrayIH->writeLatency + subArrayHO->writeLatency);
